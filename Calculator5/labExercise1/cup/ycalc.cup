@@ -1,0 +1,50 @@
+package src;
+import java_cup.runtime.*;
+
+
+terminal           SEMI, PLUS, PRINT;
+terminal Integer   NUMBER;
+
+
+non terminal Object             program;
+non terminal Astat              statement,print, statement_part;
+non terminal Lstat              statement_list;
+non terminal Aexp               expr;
+
+program          ::= statement_list:s
+                {: s.execute(); :};
+
+statement_list ::=   statement_list:l statement_part:s
+
+                 {: RESULT = new Lstat(l,s) ; :}
+
+                 | statement_part:s
+
+                 {: RESULT = new Lstat(s); :}
+
+                 ;
+
+statement_part ::=   statement:s
+
+                   {: RESULT = s; :}
+
+                   SEMI;
+
+statement   ::=  print:s
+                {: RESULT = s; :}
+
+                ;
+
+
+print  ::= PRINT expr:e
+
+                {: RESULT = Astat.print(e); :}
+
+                ;
+
+
+expr      ::= expr:e PLUS NUMBER:n
+                 {: RESULT = new Aexp(new Args(e,new Aexp(n)), sym.PLUS); :}
+              
+              | NUMBER:n
+                    {: RESULT = new Aexp(n); :};

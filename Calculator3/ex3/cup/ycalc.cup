@@ -1,0 +1,25 @@
+package src;
+import java_cup.runtime.*;
+
+
+terminal           PLUS, TIMES;
+terminal Integer   NUMBER;
+
+non terminal       program;
+non terminal Aexp  expr, term;
+
+program          ::= expr:e {: System.out.println(e.getexp() + "==>" + e.getval()); :};
+
+expr      ::= expr:e PLUS term:t
+                 {: RESULT = new Aexp(new Args(e,t), sym.PLUS); :}
+              |
+              term:t
+                 {: RESULT = t; :};
+
+
+ term    ::= term:t TIMES NUMBER:n
+                 {: RESULT = new Aexp(new Args(t,new Aexp(n)), sym.TIMES); :}
+             |
+             NUMBER:n
+                 {: RESULT = new Aexp(n); :};
+

@@ -1,0 +1,11 @@
+a=1;
+print a;
+
+if a then b=a+1;
+print b+2;
+
+if (5-2) then print (5-2);
+
+if (5-2) then if a then print b;
+
+

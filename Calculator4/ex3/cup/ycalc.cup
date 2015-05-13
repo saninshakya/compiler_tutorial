@@ -1,0 +1,24 @@
+package src;
+import java_cup.runtime.*;
+
+
+terminal           PLUS;
+terminal Integer   NUMBER;
+terminal Float     FLOAT;
+
+non terminal       program;
+non terminal Aexp  expr;
+
+
+program          ::= expr:e {: System.out.println(e.getexp() + "==>" + e.getval()); :};
+
+expr      ::= expr:e PLUS NUMBER:n
+                {: RESULT = new Aexp(new Args(e,new Aexp(n)), sym.PLUS); :}
+             | expr:e PLUS FLOAT:l
+                {: RESULT = new Aexp(new Args(e,new Aexp(l)), sym.PLUS); :}
+             | NUMBER:n
+                {: RESULT = new Aexp(n); :}
+             | FLOAT:l
+                {: RESULT = new Aexp(l); :};
+
+ 
